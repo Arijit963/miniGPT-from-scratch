@@ -1,7 +1,11 @@
+BLOCK_SIZE = 128
+BATCH_SIZE = 32
+TRAIN_STEPS = 2000
 import torch
 import torch.optim as optim
-
-from tokenizer import CharTokenizer
+import pickle
+import json
+from word_tokenizer import WordTokenizer
 from dataset import IoTDataset
 from gpt import MiniGPT, GPTConfig
 
@@ -17,16 +21,19 @@ with open(
 print("Dataset Length:", len(text))
 
 # Tokenizer
-tokenizer = CharTokenizer(text)
+tokenizer = WordTokenizer(text)
 
 print("Vocabulary Size:", tokenizer.vocab_size)
-
+print("Block Size:", BLOCK_SIZE)
+print("Batch Size:", BATCH_SIZE)
+print("Training Steps:", TRAIN_STEPS)
 # Dataset
 dataset = IoTDataset(
     text,
     tokenizer,
-    block_size=64
+    block_size=BLOCK_SIZE
 )
+
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
 print("Using Device:", device)
@@ -35,7 +42,7 @@ print("Using Device:", device)
 # Model Config
 config = GPTConfig(
     vocab_size=tokenizer.vocab_size,
-    block_size=64,
+    block_size=BLOCK_SIZE,
     n_layer=4,
     n_head=4,
     n_embd=128
@@ -59,13 +66,12 @@ optimizer = optim.AdamW(
     model.parameters(),
     lr=3e-4
 )
-
-
+model.train()
 # Training Loop
-for step in range(500):
+for step in range(TRAIN_STEPS):
 
     xb, yb = dataset.get_batch(
-        batch_size=16
+        batch_size=BATCH_SIZE
     )
 
     xb = xb.to(device)
@@ -76,13 +82,13 @@ for step in range(500):
         yb
     )
 
-    optimizer.zero_grad()
+    optimizer.zero_grad(set_to_none=True)
 
     loss.backward()
 
     optimizer.step()
 
-    if step % 50 == 0:
+    if step % 100 == 0:
 
         print(
             f"Step {step} | Loss {loss.item():.4f}"
@@ -90,8 +96,47 @@ for step in range(500):
 
 # Save model
 torch.save(
-    model.state_dict(),
+    {
+        "model_state_dict": model.state_dict(),
+        "config": config
+    },
     r"data/model.pt"
 )
+with open(
+    r"data/tokenizer.pkl",
+    "wb"
+) as f:
 
-print("\nModel Saved Successfully!")
+    pickle.dump(
+        tokenizer,
+        f
+    )
+
+info = {
+
+    "vocab_size": tokenizer.vocab_size,
+
+    "block_size": BLOCK_SIZE,
+
+    "n_layer": 4,
+
+    "n_head": 4,
+
+    "n_embd": 128
+}
+
+with open(
+    r"data/training_info.json",
+    "w"
+) as f:
+
+    json.dump(
+        info,
+        f,
+        indent=4
+    )
+
+print("\nTraining Complete!")
+print("Model Saved")
+print("Tokenizer Saved")
+print("Training Info Saved")

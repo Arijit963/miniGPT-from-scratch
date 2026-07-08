@@ -160,6 +160,31 @@ def last_week_query():
         "WHERE last_connected >= NOW() - INTERVAL 7 DAY;"
     )
     
+def last_30_min_query():
+
+    return (
+        "SELECT * FROM devices "
+        "WHERE last_connected >= "
+        "NOW() - INTERVAL 30 MINUTE;"
+    )
+
+
+def last_6_hours_query():
+
+    return (
+        "SELECT * FROM devices "
+        "WHERE last_connected >= "
+        "NOW() - INTERVAL 6 HOUR;"
+    )
+
+
+def last_month_query():
+
+    return (
+        "SELECT * FROM devices "
+        "WHERE last_connected >= "
+        "NOW() - INTERVAL 30 DAY;"
+    )
 # ==========================================================
 # BETWEEN Queries
 # ==========================================================
@@ -220,4 +245,19 @@ def having_count(
         f"FROM {table} "
         f"GROUP BY {group_field} "
         f"HAVING COUNT(*) > {threshold};"
+    )
+
+def having_avg(
+    table,
+    group_field,
+    value_field,
+    threshold
+):
+
+    return (
+        f"SELECT {group_field}, "
+        f"AVG({value_field}) "
+        f"FROM {table} "
+        f"GROUP BY {group_field} "
+        f"HAVING AVG({value_field}) > {threshold};"
     )

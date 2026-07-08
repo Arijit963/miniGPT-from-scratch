@@ -1,51 +1,54 @@
 import torch
+import pickle
 
-from tokenizer import CharTokenizer
-from gpt import MiniGPT, GPTConfig
+from gpt import MiniGPT
 
 
-# Load training text
+# =====================================================
+# Load Tokenizer
+# =====================================================
+
 with open(
-    r"data/iot_queries.txt",
-    "r",
-    encoding="utf-8"
+    r"data/tokenizer.pkl",
+    "rb"
 ) as f:
-    text = f.read()
+
+    tokenizer = pickle.load(f)
 
 
-# Tokenizer
-tokenizer = CharTokenizer(text)
+# =====================================================
+# Load Checkpoint
+# =====================================================
 
-
-# Config
-config = GPTConfig(
-    vocab_size=tokenizer.vocab_size,
-    block_size=64,
-    n_layer=4,
-    n_head=4,
-    n_embd=128
+checkpoint = torch.load(
+    r"data/model.pt",
+    map_location="cpu",
+    weights_only=False
 )
 
+config = checkpoint["config"]
 
-# Model
 model = MiniGPT(config)
 
 model.load_state_dict(
-    torch.load(
-        r"data/model.pt",
-        map_location="cpu"
-    )
+    checkpoint["model_state_dict"]
 )
 
 model.eval()
 
+
+# =====================================================
+# Generate
+# =====================================================
 
 def generate(
     prompt,
     max_new_tokens=100
 ):
 
-    tokens = tokenizer.encode(prompt)
+    tokens = tokenizer.encode(
+        prompt
+    )
 
     idx = torch.tensor(
         [tokens],
@@ -54,9 +57,16 @@ def generate(
 
     for _ in range(max_new_tokens):
 
-        idx_cond = idx[:, -64:]
+        idx_cond = idx[
+            :,
+            -config.block_size:
+        ]
 
-        logits, _ = model(idx_cond)
+        with torch.no_grad():
+
+            logits, _ = model(
+                idx_cond
+            )
 
         logits = logits[:, -1, :]
 
@@ -65,9 +75,11 @@ def generate(
             dim=-1
         )
 
-        next_token = torch.multinomial(
+        # Greedy Decoding
+        next_token = torch.argmax(
             probs,
-            num_samples=1
+            dim=-1,
+            keepdim=True
         )
 
         idx = torch.cat(
@@ -75,14 +87,69 @@ def generate(
             dim=1
         )
 
+        generated_text = tokenizer.decode(
+            idx[0].tolist()
+        )
+
+        # Stop when SQL statement is complete
+        if ";" in generated_text:
+
+            break
+
     return tokenizer.decode(
         idx[0].tolist()
     )
 
+# =====================================================
+# Main
+# =====================================================
 
-prompt = input("Prompt: ")
+if __name__ == "__main__":
 
-result = generate(prompt)
+    user_query = input(
+        "Prompt: "
+    )
 
-print("\nGenerated:\n")
-print(result)
+    prompt = f"""
+### Instruction:
+Convert the following IoT query into SQL.
+
+### Input:
+{user_query}
+
+### Response:
+"""
+
+    result = generate(
+        prompt
+    )
+
+    result_lower = result.lower()
+
+    # Extract only the SQL response section
+    marker = "# # # response :"
+
+    if marker in result_lower:
+
+        start = result_lower.find(marker)
+
+        result = result[
+            start + len(marker):
+        ]
+
+    # Remove the next instruction if generated
+    stop_marker = "# # # instruction"
+
+    stop = result.lower().find(
+        stop_marker
+    )
+
+    if stop != -1:
+
+        result = result[:stop]
+
+    print("\nGenerated SQL:\n")
+
+    print(
+        result.strip()
+    )

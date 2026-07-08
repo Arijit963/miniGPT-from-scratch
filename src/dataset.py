@@ -56,9 +56,9 @@ if __name__ == "__main__":
         encoding="utf-8"
     ).read()
 
-    from tokenizer import CharTokenizer
+    from word_tokenizer import WordTokenizer
 
-    tokenizer = CharTokenizer(text)
+    tokenizer = WordTokenizer(text)
 
     dataset = IoTDataset(
         text,

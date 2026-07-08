@@ -315,59 +315,87 @@ ADVANCED_SENSOR_PATTERNS = [
 # Time Query Templates
 # ==========================================================
 
+LAST_30_MIN_PATTERNS = [
+
+    "show devices connected in the last 30 minutes",
+    "find devices active during the past 30 minutes",
+    "list devices seen in the last half hour",
+    "show recently connected devices from the last 30 minutes",
+    "return devices connected within 30 minutes"
+]
+
 LAST_HOUR_PATTERNS = [
 
     "show devices connected in the last hour",
-
     "find devices seen in the past hour",
-
     "list devices active during the last hour",
-
     "show recently connected devices",
-
-    "return devices connected within the last hour"
+    "return devices connected within the last hour",
+    "which devices were online in the last hour",
+    "display devices active over the past hour",
+    "retrieve devices connected during the previous hour",
+    "show all devices connected recently",
+    "list recently active devices"
 ]
 
+LAST_6_HOURS_PATTERNS = [
+
+    "show devices connected in the last 6 hours",
+    "find devices active during the past 6 hours",
+    "list devices seen in the last 6 hours",
+    "show devices online in the previous 6 hours",
+    "retrieve devices connected over the last 6 hours"
+]
 
 LAST_DAY_PATTERNS = [
 
     "show devices connected in the last 24 hours",
-
     "find devices active in the past day",
-
     "list devices seen during the last day",
-
     "return devices connected within 24 hours",
-
-    "show devices connected recently"
+    "show devices connected recently",
+    "which devices were online yesterday",
+    "display devices active over the last day",
+    "retrieve devices connected during the previous day",
+    "show all devices connected in the past day",
+    "list recently active devices from the last day"
 ]
-
-
-TODAY_PATTERNS = [
-
-    "show devices connected today",
-
-    "find devices active today",
-
-    "list today's connected devices",
-
-    "return devices seen today",
-
-    "show all devices connected today"
-]
-
 
 LAST_WEEK_PATTERNS = [
 
     "show devices connected this week",
-
     "find devices active this week",
-
     "list devices seen during the last week",
-
     "return devices connected in the past week",
+    "show devices connected within 7 days",
+    "which devices were online this week",
+    "display devices active during the previous week",
+    "retrieve devices connected over the last 7 days",
+    "show all devices connected recently this week",
+    "list devices active during the week"
+]
 
-    "show devices connected within 7 days"
+LAST_MONTH_PATTERNS = [
+
+    "show devices connected in the last 30 days",
+    "find devices active during the last month",
+    "list devices seen in the previous month",
+    "return devices connected over the last 30 days",
+    "show devices active this month"
+]
+
+TODAY_PATTERNS = [
+
+    "show devices connected today",
+    "find devices active today",
+    "list today's connected devices",
+    "return devices seen today",
+    "show all devices connected today",
+    "which devices were online today",
+    "display today's active devices",
+    "retrieve devices connected during today",
+    "show devices seen since morning",
+    "list devices active today"
 ]
 
 # ==========================================================
@@ -401,15 +429,24 @@ GROUP_COUNT_PATTERNS = [
 
     "count {table} by {field}",
 
-    "show number of {table} per {field}",
+    "show count of {table} grouped by {field}",
 
-    "display count of {table} grouped by {field}",
+    "display number of {table} per {field}",
 
     "list total {table} by {field}",
 
-    "group {table} by {field} and count them"
-]
+    "group {table} by {field} and count them",
 
+    "how many {table} exist for each {field}",
+
+    "show {field} wise count of {table}",
+
+    "count {table} for every {field}",
+
+    "display {table} counts by {field}",
+
+    "return grouped count of {table} by {field}"
+]
 
 GROUP_AVG_PATTERNS = [
 
@@ -421,7 +458,17 @@ GROUP_AVG_PATTERNS = [
 
     "list average {value_field} per {group_field}",
 
-    "group by {group_field} and calculate average {value_field}"
+    "group by {group_field} and calculate average {value_field}",
+
+    "show mean {value_field} by {group_field}",
+
+    "display {group_field} wise average {value_field}",
+
+    "find average {value_field} across each {group_field}",
+
+    "return average {value_field} grouped by {group_field}",
+
+    "calculate average {value_field} for every {group_field}"
 ]
 
 
@@ -439,5 +486,48 @@ HAVING_PATTERNS = [
 
     "display groups where count exceeds {threshold}",
 
-    "show groups with more than {threshold} records"
+    "show groups with more than {threshold} records",
+
+    "which {group_field} have over {threshold} devices",
+
+    "return {group_field} whose count is above {threshold}",
+
+    "find groups having at least {threshold} entries",
+
+    "display {group_field} with more than {threshold} records",
+
+    "list groups where count is greater than {threshold}",
+
+    "show all {group_field} exceeding {threshold} records",
+
+    "identify groups with over {threshold} members",
+
+    "retrieve {group_field} having count above {threshold}",
+
+    "which groups contain more than {threshold} rows",
+
+    "return grouped results with count greater than {threshold}"
+]
+
+HAVING_AVG_PATTERNS = [
+
+    "show {group_field} where average {field} exceeds {threshold}",
+
+    "find {group_field} having average {field} above {threshold}",
+
+    "list groups whose average {field} is greater than {threshold}",
+
+    "display {group_field} with mean {field} above {threshold}",
+
+    "return {group_field} where average {field} exceeds {threshold}",
+
+    "identify groups with average {field} higher than {threshold}",
+
+    "show groups whose average {field} is above {threshold}",
+
+    "find grouped results where average {field} exceeds {threshold}",
+
+    "list {group_field} having mean {field} greater than {threshold}",
+
+    "retrieve groups whose average {field} is above {threshold}"
 ]

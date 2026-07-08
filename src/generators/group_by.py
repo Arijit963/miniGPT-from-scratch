@@ -18,94 +18,73 @@ def generate_group_by_queries():
     dataset = []
 
     # ==========================================
-    # COUNT BY ROOM
+    # COUNT GROUPS
     # ==========================================
 
-    for pattern in GROUP_COUNT_PATTERNS:
+    count_groups = [
 
-        query = pattern.format(
-            table="sensors",
-            field="room"
-        )
+        ("sensors", "room"),
 
-        sql = group_by_count(
-            "sensors",
-            "room"
-        )
+        ("devices", "status"),
 
-        add_sample(
-            dataset,
-            query,
-            sql
-        )
+        ("devices", "location")
+    ]
 
-    # ==========================================
-    # COUNT BY STATUS
-    # ==========================================
+    for table, field in count_groups:
 
-    for pattern in GROUP_COUNT_PATTERNS:
+        for pattern in GROUP_COUNT_PATTERNS:
 
-        query = pattern.format(
-            table="devices",
-            field="status"
-        )
+            query = pattern.format(
+                table=table,
+                field=field
+            )
 
-        sql = group_by_count(
-            "devices",
-            "status"
-        )
+            sql = group_by_count(
+                table,
+                field
+            )
 
-        add_sample(
-            dataset,
-            query,
-            sql
-        )
+            add_sample(
+                dataset,
+                query,
+                sql
+            )
 
     # ==========================================
-    # AVG TEMPERATURE BY ROOM
+    # AVG GROUPS
     # ==========================================
 
-    for pattern in GROUP_AVG_PATTERNS:
+    avg_groups = [
 
-        query = pattern.format(
-            value_field="temperature",
-            group_field="room"
-        )
+        ("sensors", "room", "temperature"),
 
-        sql = group_by_avg(
-            "sensors",
-            "room",
-            "temperature"
-        )
+        ("sensors", "room", "humidity"),
 
-        add_sample(
-            dataset,
-            query,
-            sql
-        )
+        ("sensors", "room", "pressure"),
 
-    # ==========================================
-    # AVG HUMIDITY BY ROOM
-    # ==========================================
+        ("devices", "location", "battery")
+    ]
 
-    for pattern in GROUP_AVG_PATTERNS:
+    for table, group_field, value_field in avg_groups:
 
-        query = pattern.format(
-            value_field="humidity",
-            group_field="room"
-        )
+        for pattern in GROUP_AVG_PATTERNS:
 
-        sql = group_by_avg(
-            "sensors",
-            "room",
-            "humidity"
-        )
+            query = pattern.format(
+                value_field=value_field,
+                group_field=group_field
+            )
 
-        add_sample(
-            dataset,
-            query,
-            sql
-        )
+            sql = group_by_avg(
+                table,
+                group_field,
+                value_field
+            )
+
+            add_sample(
+                dataset,
+                query,
+                sql
+            )
 
     random.shuffle(dataset)
 

@@ -2,18 +2,16 @@ import random
 
 from generators.helper import add_sample
 
-from generators.templates import (
-    LAST_HOUR_PATTERNS,
-    LAST_DAY_PATTERNS,
-    TODAY_PATTERNS,
-    LAST_WEEK_PATTERNS
-)
+from generators.templates import *
 
 from generators.sql_templates import (
+    last_30_min_query,
     last_hour_query,
+    last_6_hours_query,
     last_day_query,
     today_query,
-    last_week_query
+    last_week_query,
+    last_month_query
 )
 
 
@@ -21,53 +19,32 @@ def generate_time_queries():
 
     dataset = []
 
-    # =====================================================
-    # Last Hour
-    # =====================================================
+    mappings = [
 
-    for pattern in LAST_HOUR_PATTERNS:
+        (LAST_30_MIN_PATTERNS, last_30_min_query()),
 
-        add_sample(
-            dataset,
-            pattern,
-            last_hour_query()
-        )
+        (LAST_HOUR_PATTERNS, last_hour_query()),
 
-    # =====================================================
-    # Last Day
-    # =====================================================
+        (LAST_6_HOURS_PATTERNS, last_6_hours_query()),
 
-    for pattern in LAST_DAY_PATTERNS:
+        (LAST_DAY_PATTERNS, last_day_query()),
 
-        add_sample(
-            dataset,
-            pattern,
-            last_day_query()
-        )
+        (TODAY_PATTERNS, today_query()),
 
-    # =====================================================
-    # Today
-    # =====================================================
+        (LAST_WEEK_PATTERNS, last_week_query()),
 
-    for pattern in TODAY_PATTERNS:
+        (LAST_MONTH_PATTERNS, last_month_query())
+    ]
 
-        add_sample(
-            dataset,
-            pattern,
-            today_query()
-        )
+    for patterns, sql in mappings:
 
-    # =====================================================
-    # Last Week
-    # =====================================================
+        for pattern in patterns:
 
-    for pattern in LAST_WEEK_PATTERNS:
-
-        add_sample(
-            dataset,
-            pattern,
-            last_week_query()
-        )
+            add_sample(
+                dataset,
+                pattern,
+                sql
+            )
 
     random.shuffle(dataset)
 
