@@ -97,3 +97,30 @@ def where_and(table, conditions):
 
     return sql
 
+
+# ==========================================================
+# Three Condition Queries
+# ==========================================================
+
+def where_and(table, conditions):
+
+    sql = f"SELECT * FROM {table} WHERE "
+
+    clauses = []
+
+    for field, operator, value, is_string in conditions:
+
+        if is_string:
+            clauses.append(
+                f"{field} {operator} '{value}'"
+            )
+        else:
+            clauses.append(
+                f"{field} {operator} {value}"
+            )
+
+    sql += " AND ".join(clauses)
+
+    sql += ";"
+
+    return sql

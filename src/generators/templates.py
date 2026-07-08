@@ -240,3 +240,73 @@ MULTI_CONDITION_PATTERNS = [
 
     "list sensors from room {room} where humidity exceeds {humidity}"
 ]
+
+# ==========================================================
+# Sorting Templates
+# ==========================================================
+
+SORT_DESC_PATTERNS = [
+
+    "show top {limit} {table} with highest {field}",
+
+    "list top {limit} {table} by {field}",
+
+    "find {table} with highest {field}",
+
+    "show {table} ordered by {field} descending",
+
+    "display {table} sorted by {field} descending",
+
+    "return {table} with maximum {field}",
+
+    "show {table} ranked by {field}"
+]
+
+
+SORT_ASC_PATTERNS = [
+
+    "show top {limit} {table} with lowest {field}",
+
+    "list top {limit} {table} by lowest {field}",
+
+    "find {table} with lowest {field}",
+
+    "show {table} ordered by {field} ascending",
+
+    "display {table} sorted by {field} ascending",
+
+    "return {table} with minimum {field}",
+
+    "show {table} ranked by lowest {field}"
+]
+
+# ==========================================================
+# Advanced Multi Condition Templates
+# ==========================================================
+
+ADVANCED_DEVICE_PATTERNS = [
+
+    "{verb} {status} devices with battery above {battery} in {location}",
+
+    "find {status} devices located in {location} with battery greater than {battery}",
+
+    "show devices that are {status} and have battery above {battery} in {location}",
+
+    "list {status} devices in {location} with battery higher than {battery}",
+
+    "return devices with status {status}, battery above {battery}, located in {location}"
+]
+
+
+ADVANCED_SENSOR_PATTERNS = [
+
+    "{verb} sensors in room {room} with humidity above {humidity} and temperature below {temperature}",
+
+    "find sensors located in room {room} where humidity exceeds {humidity} and temperature is below {temperature}",
+
+    "show sensors from room {room} having humidity greater than {humidity} and temperature less than {temperature}",
+
+    "list sensors in room {room} with humidity above {humidity} and temperature under {temperature}",
+
+    "return sensors in room {room} where humidity > {humidity} and temperature < {temperature}"
+]
