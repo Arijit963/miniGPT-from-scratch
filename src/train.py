@@ -1,6 +1,6 @@
 BLOCK_SIZE = 128
 BATCH_SIZE = 32
-TRAIN_STEPS = 2000
+TRAIN_STEPS = 4000
 import torch
 import torch.optim as optim
 import pickle
@@ -43,9 +43,9 @@ print("Using Device:", device)
 config = GPTConfig(
     vocab_size=tokenizer.vocab_size,
     block_size=BLOCK_SIZE,
-    n_layer=4,
-    n_head=4,
-    n_embd=128
+    n_layer=6,
+    n_head=8,
+    n_embd=256
 )
 
 
@@ -85,6 +85,10 @@ for step in range(TRAIN_STEPS):
     optimizer.zero_grad(set_to_none=True)
 
     loss.backward()
+    torch.nn.utils.clip_grad_norm_(
+    model.parameters(),
+    1.0
+    )
 
     optimizer.step()
 
@@ -93,6 +97,27 @@ for step in range(TRAIN_STEPS):
         print(
             f"Step {step} | Loss {loss.item():.4f}"
         )
+
+    # ==========================================
+    # Checkpoint Saving
+    # ==========================================
+
+    if step % 500 == 0 and step > 0:
+
+        torch.save(
+        {
+            "step": step,
+            "model_state_dict": model.state_dict(),
+            "optimizer_state_dict": optimizer.state_dict(),
+            "config": config
+        },
+        f"data/checkpoint_{step}.pt"
+    )
+
+        print(
+            f"Checkpoint Saved: checkpoint_{step}.pt"
+        )
+
 
 # Save model
 torch.save(
@@ -118,11 +143,11 @@ info = {
 
     "block_size": BLOCK_SIZE,
 
-    "n_layer": 4,
+    "n_layer": 6,
 
-    "n_head": 4,
+    "n_head": 8,
 
-    "n_embd": 128
+    "n_embd": 256
 }
 
 with open(
