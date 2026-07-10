@@ -3,16 +3,46 @@ import json
 from generate import generate
 
 
+import re
+
 # =====================================================
 # Normalize SQL
 # =====================================================
 
+
 def normalize(text):
 
-    return " ".join(
-        text.lower().split()
+    text = text.lower()
+
+    text = re.sub(
+        r"\s+",
+        " ",
+        text
     )
 
+    # Fix split operators
+
+    text = text.replace(
+        "> =",
+        ">="
+    )
+
+    text = text.replace(
+        "< =",
+        "<="
+    )
+
+    text = text.replace(
+        "! =",
+        "!="
+    )
+
+    text = text.replace(
+        "= =",
+        "=="
+    )
+
+    return text.strip()
 
 # =====================================================
 # Load Evaluation Dataset
@@ -33,8 +63,42 @@ total = len(test_cases)
 
 
 # =====================================================
+# Auto detect SQL Categories
+# =====================================================
+
+def detect_category(sql):
+
+    sql = sql.lower()
+
+    if "having" in sql:
+        return "having"
+
+    if "group by" in sql:
+        return "group_by"
+
+    if "order by" in sql:
+        return "order_by"
+
+    if "between" in sql:
+        return "between"
+
+    if "last_connected" in sql:
+        return "time"
+
+    return "where"
+
+# =====================================================
 # Evaluation Loop
 # =====================================================
+
+category_results = {
+    "where": [0, 0],
+    "group_by": [0, 0],
+    "having": [0, 0],
+    "order_by": [0, 0],
+    "between": [0, 0],
+    "time": [0, 0]
+}
 
 for i, sample in enumerate(test_cases, start=1):
 
@@ -81,6 +145,20 @@ Convert the following IoT query into SQL.
     )
 
     matched = prediction == expected
+    
+    category = detect_category(
+        expected
+    )
+
+    category_results[
+        category
+    ][1] += 1
+
+    if matched:
+
+        category_results[
+            category
+        ][0] += 1
 
     if matched:
 
@@ -135,3 +213,85 @@ print(
 )
 
 print("=" * 60)
+
+# =====================================================
+# Build Evaluation Report
+# =====================================================
+
+report = {
+
+    "accuracy": round(
+        accuracy,
+        2
+    ),
+
+    "correct": correct,
+
+    "total": total,
+
+    "categories": {}
+}
+
+print("\nCategory Accuracy")
+
+print("=" * 60)
+
+for category, values in category_results.items():
+
+    correct_cat = values[0]
+
+    total_cat = values[1]
+
+    if total_cat == 0:
+        continue
+
+    acc = (
+        correct_cat / total_cat
+    ) * 100
+
+    report[
+        "categories"
+    ][category] = {
+
+        "accuracy": round(
+            acc,
+            2
+        ),
+
+        "correct": correct_cat,
+
+        "total": total_cat
+    }
+
+    print(
+        f"{category:10s}: "
+        f"{correct_cat}/{total_cat} "
+        f"({acc:.2f}%)"
+    )
+    
+# =====================================================
+# Save Report
+# =====================================================
+
+with open(
+    r"data/evaluation_report.json",
+    "w",
+    encoding="utf-8"
+) as f:
+
+    json.dump(
+        report,
+        f,
+        indent=4
+    )
+
+print()
+
+print(
+    "Evaluation report saved:"
+)
+
+print(
+    "data/evaluation_report.json"
+)
+
