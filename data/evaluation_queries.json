@@ -1,0 +1,101 @@
+[
+    {
+        "query": "count devices by status",
+        "expected": "select status , count ( * ) from devices group by status ;"
+    },
+
+    {
+        "query": "show average humidity by room",
+        "expected": "select room , avg ( humidity ) from sensors group by room ;"
+    },
+
+    {
+        "query": "show top 10 devices with highest battery",
+        "expected": "select * from devices order by battery desc limit 10 ;"
+    },
+
+    {
+        "query": "find online devices in Building A with battery greater than 60",
+        "expected": "select * from devices where status = ' online ' and battery > 60 and location = ' building a ' ;"
+    },
+
+    {
+        "query": "show devices connected in the last 24 hours",
+        "expected": "select * from devices where last_connected >= now ( ) - interval 1 day ;"
+    },
+
+    {
+        "query": "show sensors with temperature between 20 and 40",
+        "expected": "select * from sensors where temperature between 20 and 40 ;"
+    },
+
+    {
+        "query": "show active devices",
+        "expected": "select * from devices where status = ' active ' ;"
+    },
+
+    {
+        "query": "show inactive devices",
+        "expected": "select * from devices where status = ' inactive ' ;"
+    },
+
+    {
+        "query": "show sensors with humidity above 60",
+        "expected": "select * from sensors where humidity > 60 ;"
+    },
+
+    {
+        "query": "show sensors with temperature above 50",
+        "expected": "select * from sensors where temperature > 50 ;"
+    },
+
+    {
+        "query": "show sensors with pressure below 1000",
+        "expected": "select * from sensors where pressure < 1000 ;"
+    },
+
+    {
+        "query": "show devices with battery below 30",
+        "expected": "select * from devices where battery < 30 ;"
+    },
+
+    {
+        "query": "show average battery",
+        "expected": "select avg ( battery ) from devices ;"
+    },
+
+    {
+        "query": "show maximum temperature",
+        "expected": "select max ( temperature ) from sensors ;"
+    },
+
+    {
+        "query": "show minimum humidity",
+        "expected": "select min ( humidity ) from sensors ;"
+    },
+
+    {
+        "query": "show devices in Warehouse",
+        "expected": "select * from devices where location = ' warehouse ' ;"
+    },
+
+    {
+        "query": "show sensors in room A",
+        "expected": "select * from sensors where room = ' a ' ;"
+    },
+
+    {
+        "query": "show locations where average battery exceeds 60",
+        "expected": "select location , avg ( battery ) from devices group by location having avg ( battery ) > 60 ;"
+    },
+
+    {
+        "query": "show devices connected today",
+        "expected": "select * from devices where date ( last_connected ) = current_date ;"
+    },
+
+    {
+        "query": "show top 5 devices with lowest battery",
+        "expected": "select * from devices order by battery asc limit 5 ;"
+    }
+]
