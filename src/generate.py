@@ -104,6 +104,32 @@ def generate(
 # Main
 # =====================================================
 
+def extract_sql(text):
+
+    marker = "# # # response :"
+
+    text_lower = text.lower()
+
+    if marker in text_lower:
+
+        start = text_lower.find(marker)
+
+        text = text[
+            start + len(marker):
+        ]
+
+    stop_marker = "# # # instruction"
+
+    stop = text.lower().find(
+        stop_marker
+    )
+
+    if stop != -1:
+
+        text = text[:stop]
+
+    return text.strip()
+
 if __name__ == "__main__":
 
     user_query = input(
@@ -124,32 +150,10 @@ Convert the following IoT query into SQL.
         prompt
     )
 
-    result_lower = result.lower()
-
-    # Extract only the SQL response section
-    marker = "# # # response :"
-
-    if marker in result_lower:
-
-        start = result_lower.find(marker)
-
-        result = result[
-            start + len(marker):
-        ]
-
-    # Remove the next instruction if generated
-    stop_marker = "# # # instruction"
-
-    stop = result.lower().find(
-        stop_marker
+    sql = extract_sql(
+        result
     )
-
-    if stop != -1:
-
-        result = result[:stop]
 
     print("\nGenerated SQL:\n")
 
-    print(
-        result.strip()
-    )
+    print(sql)
