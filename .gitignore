@@ -11,9 +11,8 @@ __pycache__/
 # Jupyter
 .ipynb_checkpoints/
 
-# Model files
-*.pt
-*.pth
+# Model checkpoints
+data/checkpoint_*.pt
 
 # Training outputs
 checkpoints/
