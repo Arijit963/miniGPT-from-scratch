@@ -1,11 +1,11 @@
 import json
-from sql_executor import execute_sql
-from generate import generate
+from inference import query_to_sql
 import os
-from generate import (
+from sql_executor import execute_sql
+'''from generate import (
     generate,
     extract_sql
-)
+)'''
 
 # =====================================================
 # Load Evaluation Report
@@ -89,21 +89,22 @@ while True:
         continue
 
     if query.lower() == "exit":
-        
-        if query.lower() == "clear":
-
-            os.system(
-                "cls" if os.name == "nt"
-                else "clear"
-            )
-
-            continue
 
         print(
             "\nGoodbye!"
         )
 
         break
+
+
+    if query.lower() == "clear":
+
+        os.system(
+            "cls" if os.name == "nt"
+            else "clear"
+        )
+
+        continue
 
     if query.lower() == "help":
 
@@ -155,9 +156,7 @@ Convert the following IoT query into SQL.
 ### Response:
 """
 
-    result = generate(prompt)
-
-    sql = extract_sql(result)
+    sql = query_to_sql(query)
 
     print()
 

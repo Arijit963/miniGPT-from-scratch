@@ -1,6 +1,6 @@
 import json
 
-from generate import generate
+from inference import query_to_sql
 
 
 import re
@@ -108,37 +108,11 @@ for i, sample in enumerate(test_cases, start=1):
         sample["expected"]
     )
 
-    prompt = f"""
-### Instruction:
-Convert the following IoT query into SQL.
-
-### Input:
-{query}
-
-### Response:
-"""
-
-    prediction = generate(
-        prompt
+    prediction = query_to_sql(
+    query
     )
 
-    prediction_lower = prediction.lower()
-
-    marker = "# # # response :"
-
-    if marker in prediction_lower:
-
-        prediction = prediction_lower.split(
-            marker
-        )[-1]
-
-    stop_marker = "# # # instruction"
-
-    if stop_marker in prediction:
-
-        prediction = prediction.split(
-            stop_marker
-        )[0]
+    
 
     prediction = normalize(
         prediction

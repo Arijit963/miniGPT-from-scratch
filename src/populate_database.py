@@ -1,4 +1,6 @@
 import sqlite3
+import random
+from datetime import datetime, timedelta
 
 
 conn = sqlite3.connect(
@@ -9,26 +11,94 @@ cursor = conn.cursor()
 
 
 # ==========================================
+# Clear Existing Data
+# ==========================================
+
+cursor.execute(
+    "DELETE FROM devices"
+)
+
+cursor.execute(
+    "DELETE FROM sensors"
+)
+
+
+# ==========================================
 # Devices
 # ==========================================
 
-devices = [
-
-    (1, "ESP32-01", "active", 92, "warehouse", "2026-07-10"),
-
-    (2, "ESP32-02", "inactive", 35, "building a", "2026-07-09"),
-
-    (3, "ESP32-03", "online", 67, "building a", "2026-07-10"),
-
-    (4, "Pi-Node-01", "active", 80, "warehouse", "2026-07-10"),
-
-    (5, "Pi-Node-02", "online", 20, "building b", "2026-07-08")
+statuses = [
+    "active",
+    "inactive",
+    "online",
+    "offline",
+    "maintenance"
 ]
 
+locations = [
+    "building a",
+    "building b",
+    "building c",
+    "warehouse",
+    "lab",
+    "factory",
+    "office"
+]
+
+device_prefixes = [
+    "ESP32",
+    "RPI",
+    "ARDUINO",
+    "STM32",
+    "JETSON"
+]
+
+devices = []
+
+today = datetime.now()
+
+for i in range(1, 101):
+
+    device_name = (
+        f"{random.choice(device_prefixes)}-{i:03d}"
+    )
+
+    status = random.choice(
+        statuses
+    )
+
+    battery = random.randint(
+        5,
+        100
+    )
+
+    location = random.choice(
+        locations
+    )
+
+    days_ago = random.randint(
+        0,
+        30
+    )
+
+    last_connected = (
+        today - timedelta(days=days_ago)
+    ).strftime("%Y-%m-%d")
+
+    devices.append(
+        (
+            i,
+            device_name,
+            status,
+            battery,
+            location,
+            last_connected
+        )
+    )
 
 cursor.executemany(
     """
-    INSERT OR REPLACE INTO devices
+    INSERT INTO devices
     VALUES (?, ?, ?, ?, ?, ?)
     """,
     devices
@@ -39,23 +109,55 @@ cursor.executemany(
 # Sensors
 # ==========================================
 
-sensors = [
-
-    (1, "a", 25, 45, 1008),
-
-    (2, "a", 32, 61, 1002),
-
-    (3, "b", 18, 72, 998),
-
-    (4, "warehouse", 40, 50, 1010),
-
-    (5, "warehouse", 55, 68, 1005)
+rooms = [
+    "a",
+    "b",
+    "c",
+    "d",
+    "e",
+    "warehouse",
+    "lab",
+    "server_room",
+    "factory",
+    "office"
 ]
 
+sensors = []
+
+for i in range(1, 501):
+
+    room = random.choice(
+        rooms
+    )
+
+    temperature = round(
+        random.uniform(10, 80),
+        1
+    )
+
+    humidity = round(
+        random.uniform(20, 95),
+        1
+    )
+
+    pressure = round(
+        random.uniform(950, 1050),
+        1
+    )
+
+    sensors.append(
+        (
+            i,
+            room,
+            temperature,
+            humidity,
+            pressure
+        )
+    )
 
 cursor.executemany(
     """
-    INSERT OR REPLACE INTO sensors
+    INSERT INTO sensors
     VALUES (?, ?, ?, ?, ?)
     """,
     sensors
@@ -66,3 +168,5 @@ conn.commit()
 conn.close()
 
 print("Database Populated!")
+print("Devices :", len(devices))
+print("Sensors :", len(sensors))
