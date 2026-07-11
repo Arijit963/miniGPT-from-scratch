@@ -50,8 +50,8 @@ with st.sidebar:
     )
 
     st.metric(
-        "Vocabulary",
-        "283"
+    "Vocabulary",
+    "304"
     )
 
 
@@ -59,7 +59,14 @@ with st.sidebar:
 # Header
 # =====================================================
 
-st.title("🤖 IoTQueryGPT v2")
+st.title("🤖 IoTQueryGPT v2.4")
+
+st.info(
+    """
+    GPT-style Transformer built from scratch using PyTorch.
+    Converts natural language IoT queries into executable SQL.
+    """
+)
 
 st.markdown(
     f"""
@@ -69,6 +76,16 @@ Natural Language → SQL → SQLite
 """
 )
 
+st.markdown(
+    """
+    **Model Statistics**
+
+    - Parameters: 4.9M
+    - Vocabulary: 304
+    - Benchmark Accuracy: 82.19%
+    - Dataset Size: 13,411 Samples
+    """
+)
 
 # =====================================================
 # Examples
@@ -80,13 +97,17 @@ examples = [
 
     "show active devices",
 
+    "show devices with battery below 20",
+
     "count devices by status",
+
+    "show average humidity by room",
 
     "show top 10 devices with highest battery",
 
-    "show devices with battery below 30",
+    "show locations where average battery exceeds 60",
 
-    "show locations where average battery exceeds 60"
+    "show sensors with temperature between 20 and 40"
 ]
 
 st.subheader(
