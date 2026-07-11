@@ -1,5 +1,0 @@
-print(f"Categorical Queries      : {len(categorical)}")
-print(f"Aggregation Queries      : {len(aggregation)}")
-print(f"Multi Condition Queries  : {len(multi_condition)}")
-print(f"Sorting Queries          : {len(sorting)}")
-print(f"Total Samples            : {len(dataset)}")

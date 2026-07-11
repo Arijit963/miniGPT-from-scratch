@@ -13,7 +13,7 @@ __pycache__/
 
 # Model checkpoints
 data/checkpoint_*.pt
-
+data/v2_3_backup/
 # Training outputs
 checkpoints/
 models/

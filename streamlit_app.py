@@ -110,9 +110,7 @@ examples = [
     "show sensors with temperature between 20 and 40"
 ]
 
-st.subheader(
-    "Example Queries"
-)
+
 
 for ex in examples:
 
