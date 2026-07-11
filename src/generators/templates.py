@@ -529,7 +529,17 @@ HAVING_PATTERNS = [
     "find status groups with more than {threshold} devices",
 
     "show device statuses with over {threshold} devices"
-]
+    
+    "show rooms having more than {threshold} sensors",
+    "find rooms with more than {threshold} sensors",
+    "which rooms have more than {threshold} sensors",
+
+    "show locations having more than {threshold} devices",
+    "find locations with more than {threshold} devices",
+    "which locations have more than {threshold} devices",
+
+    "show statuses having more than {threshold} devices"
+    ]
 
 HAVING_AVG_PATTERNS = [
 

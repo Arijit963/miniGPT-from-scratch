@@ -69,11 +69,21 @@ def generate_numeric_queries():
 
                 sql = where_numeric(table, field, ">", value)
 
-                add_sample(
-                    dataset,
-                    query,
-                    sql
-                )
+                if field in ["battery", "humidity"]:
+
+                    repeat = 5
+
+                else:
+
+                    repeat = 1
+
+                for _ in range(repeat):
+
+                    add_sample(
+                        dataset,
+                        query,
+                        sql
+                    )
 
         # ----------------------------
         # Less-than Queries
@@ -98,8 +108,16 @@ def generate_numeric_queries():
                 )
 
                 sql = where_numeric(table, field, "<", value)
-                   
-                for _ in range(3):
+
+                if field in ["battery", "humidity"]:
+
+                    repeat = 5
+
+                else:
+
+                    repeat = 1
+
+                for _ in range(repeat):
 
                     add_sample(
                         dataset,

@@ -1,11 +1,11 @@
 {
-    "accuracy": 82.19,
-    "correct": 60,
+    "accuracy": 73.97,
+    "correct": 54,
     "total": 73,
     "categories": {
         "where": {
-            "accuracy": 92.31,
-            "correct": 36,
+            "accuracy": 74.36,
+            "correct": 29,
             "total": 39
         },
         "group_by": {
@@ -14,8 +14,8 @@
             "total": 4
         },
         "having": {
-            "accuracy": 60.0,
-            "correct": 6,
+            "accuracy": 40.0,
+            "correct": 4,
             "total": 10
         },
         "order_by": {
@@ -24,13 +24,13 @@
             "total": 6
         },
         "between": {
-            "accuracy": 60.0,
-            "correct": 6,
+            "accuracy": 80.0,
+            "correct": 8,
             "total": 10
         },
         "time": {
-            "accuracy": 50.0,
-            "correct": 2,
+            "accuracy": 75.0,
+            "correct": 3,
             "total": 4
         }
     }
