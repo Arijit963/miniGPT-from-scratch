@@ -35,7 +35,7 @@ def generate_advanced_multi_condition_queries():
 
             for battery in battery_values:
 
-                for pattern in ADVANCED_DEVICE_PATTERNS:
+                for pattern in ADVANCED_DEVICE_PATTERNS[:2]:
 
                     query = pattern.format(
                         verb=random.choice(VERBS),
@@ -73,7 +73,7 @@ def generate_advanced_multi_condition_queries():
 
             for temperature in temperature_values:
 
-                for pattern in ADVANCED_SENSOR_PATTERNS:
+                for pattern in ADVANCED_SENSOR_PATTERNS[:2]:
 
                     query = pattern.format(
                         verb=random.choice(VERBS),

@@ -99,11 +99,13 @@ def generate_numeric_queries():
 
                 sql = where_numeric(table, field, "<", value)
                    
-                add_sample(
-                    dataset,
-                    query,
-                    sql
-                )
+                for _ in range(3):
+
+                    add_sample(
+                        dataset,
+                        query,
+                        sql
+                    )
 
     random.shuffle(dataset)
 

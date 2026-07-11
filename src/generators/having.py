@@ -30,7 +30,7 @@ def generate_having_queries():
         ("devices", "location")
     ]
 
-    count_thresholds = [2, 5, 10, 20]
+    count_thresholds = [1,2,3,5,10,15,20,25,50]
 
     for table, group_field in count_groups:
 
@@ -68,7 +68,7 @@ def generate_having_queries():
          [40, 50, 60, 70]),
 
         ("devices", "location", "battery",
-         [20, 40, 60, 80])
+         [5, 10, 20, 30, 40, 50, 60, 70, 80, 90])
     ]
 
     for table, group_field, field, thresholds in avg_configs:

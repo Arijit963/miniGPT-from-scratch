@@ -507,6 +507,28 @@ HAVING_PATTERNS = [
     "which groups contain more than {threshold} rows",
 
     "return grouped results with count greater than {threshold}"
+    
+    # Natural IoT phrasing
+
+    "show rooms having more than {threshold} sensors",
+
+    "find rooms with more than {threshold} sensors",
+
+    "list rooms containing over {threshold} sensors",
+
+    "show locations having more than {threshold} devices",
+
+    "find locations with more than {threshold} devices",
+
+    "which rooms have more than {threshold} sensors",
+
+    "which locations have more than {threshold} devices",
+
+    "show statuses having more than {threshold} devices",
+
+    "find status groups with more than {threshold} devices",
+
+    "show device statuses with over {threshold} devices"
 ]
 
 HAVING_AVG_PATTERNS = [
@@ -530,4 +552,20 @@ HAVING_AVG_PATTERNS = [
     "list {group_field} having mean {field} greater than {threshold}",
 
     "retrieve groups whose average {field} is above {threshold}"
+    
+    "show locations where average battery exceeds {threshold}",
+
+    "show locations where average battery is above {threshold}",
+
+    "find locations having average battery above {threshold}",
+
+    "list locations with average battery greater than {threshold}",
+
+    "show rooms where average humidity exceeds {threshold}",
+
+    "show rooms where average temperature exceeds {threshold}",
+
+    "find rooms having average humidity above {threshold}",
+
+    "find rooms having average temperature above {threshold}"
 ]
